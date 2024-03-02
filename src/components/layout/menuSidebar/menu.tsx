@@ -1,5 +1,5 @@
 'use client'
-import { usePathname, useRouter } from "next/navigation";
+import { RedirectType, redirect, usePathname } from "next/navigation";
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { HomeIcon as SolidHomeIcon} from "@heroicons/react/24/solid";
 import { HashtagIcon } from "@heroicons/react/24/outline";
@@ -14,11 +14,14 @@ import Button from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { useState } from "react";
 import PostUpload from "@/components/postUpload";
+import Link from "next/link";
 
 export function Menu({currentUser}:{currentUser:user}){
     const [Post , setPost] = useState(false)
     const pathname  = usePathname()
-
+     if(!currentUser){
+        return redirect('/login' , RedirectType.replace)
+    }
     const menus = [
         {
             label : "Home" ,
@@ -73,24 +76,12 @@ export function Menu({currentUser}:{currentUser:user}){
                     const activePath = pathname === item?.link
                     const Icon = item.icons
                     const Solid = item.Solid
-                    const goToMenu = () =>{
-                        if(item.auth && !currentUser){
-                            router.push(`${process.env.BASE_URL}/login`)
-                            return ;
-                        }
-                        else{
-                            if(item.cursor === 'cursor-not-allowed'){
-                                return null
-                            }
-                            router.push(`${process.env.BASE_URL}/${item.link}`)
-                            return ;
-                        }
-                    }
+                
                     return(
-                            <div className={`flex flex-row gap-2 items-center p-2 w-fit rounded-full ${item.cursor || 'cursor-pointer'} transition duration-1000 hover:bg-[#e5e7eb]/60 `}onClick={()=>goToMenu()} key={index}>
-                                <div className="w-fit h-fit">{activePath ? <Solid className={`w-[28px] h-[28px]`}  />:<Icon className={`w-[28px] h-[28px]`} />}</div>
-                                <div className="text-[16px] text-black font-normal hidden lg:block">{item.label}</div>
-                        </div>
+                        <Link href={item.link} className={`flex flex-row gap-2 items-center p-2 w-fit rounded-full ${item.cursor || 'cursor-pointer'} transition duration-1000 hover:bg-[#e5e7eb]/60 `} key={index}>
+                            <div className="w-fit h-fit">{activePath ? <Solid className={`w-[28px] h-[28px]`}  />:<Icon className={`w-[28px] h-[28px]`} />}</div>
+                            <div className="text-[16px] text-black font-normal hidden lg:block">{item.label}</div>
+                        </Link>
                     )
                 })}
 
