@@ -62,7 +62,6 @@ export function Menu({currentUser}:{currentUser:user}){
             cursor : 'cursor-not-allowed'
         } ,
     ] 
-    const router = useRouter()
     //  Button Click Function 
     const tweetHandle=()=>{
         setPost(!Post)
