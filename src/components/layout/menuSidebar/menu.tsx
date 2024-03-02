@@ -75,14 +75,14 @@ export function Menu({currentUser}:{currentUser:user}){
                     const Solid = item.Solid
                     const goToMenu = () =>{
                         if(item.auth && !currentUser){
-                            router.push(`/login`)
+                            router.push(`${process.env.BASE_URL}/login`)
                             return ;
                         }
                         else{
                             if(item.cursor === 'cursor-not-allowed'){
                                 return null
                             }
-                            router.push(`/${item.link}`)
+                            router.push(`${process.env.BASE_URL}/${item.link}`)
                             return ;
                         }
                     }
